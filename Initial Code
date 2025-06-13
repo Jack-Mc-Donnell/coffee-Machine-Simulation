@@ -1,0 +1,249 @@
+# The initial code:
+
+
+import sys
+
+water = 1500
+coffee = 100
+milk = 1200
+money = 10.00
+
+def collect_coins():
+                    dollars = int(input("How many dollars do you want to pay (1.00): "))
+                    half_dollar = int(input("How many half dollars do you want to pay (0.50): "))
+                    quarters = int(input("How many quarters do you want to pay (0.25): "))
+                    dimes = int(input("How many dimes do you want to pay (0.10): "))
+                    nickels = int(input("How many nickel do you want to pay (0.05): "))
+                    penny = int(input("How many pennies do you want to pay (0.01): "))
+                    return (dollars * 1.00
+                        + half_dollar * 0.50
+                        + quarters * 0.25
+                        + dimes * 0.10
+                        + nickels * 0.05
+                        + penny * 0.01)
+
+def check_resource(required_water = 300, required_coffee = 30, required_milk = 200):
+    global water, coffee, milk
+    if water <= required_water or coffee <= required_coffee or milk <= required_milk:
+        print("\nPlease wait - coffee machine resources being added...")
+        water += 500
+        coffee += 100
+        milk += 500
+        print("Resources have been refilled!\n")
+
+
+while True:
+    do_they_want_to_order = input("Would you like to order/continue? - Type 'Yes' or 'No': ").lower()
+    if do_they_want_to_order == "no":
+        print("Thank you for your time!")
+        sys.exit()
+    elif do_they_want_to_order == "yes":
+        customer_order = input("What would you like? - 'Espresso', 'Latte', 'Cappuccino', or a 'report' of remaining resources: ").lower()
+        if customer_order == "report":
+            print(f"Water: {water}ml")
+            print(f"Coffee: {coffee}g")
+            print(f"Milk: {milk}ml")
+            print(f"Money: £{money:.2f}")
+        
+        elif customer_order == "espresso":
+
+            check_resource(50, 18)
+            if water >= 50 and coffee >= 18:
+
+                print("That will be £1.50 please")
+                espresso_price = 1.50
+                payment_total = 0.0
+                
+                print("\n")
+
+                #initial payment
+                payment_total += collect_coins()
+
+                #loop until payment is enough
+                while payment_total < espresso_price:
+                    print(f"\nYou have under paid for this item, you still owe: £{espresso_price - payment_total:.2f}")
+                    print("Please provide the outstanding payment: ")
+                    payment_total += collect_coins()
+                
+                #process payment
+                print(f"\nYou paid: £{payment_total:.2f}")
+                if payment_total > espresso_price:
+                    change = round(payment_total - espresso_price, 2)
+                    print(f"\nHere is your change: £{change:.2f}")
+
+                money += espresso_price
+                water -= 50
+                coffee -= 18
+
+                print("\nThank you, enjoy!!")
+
+        elif customer_order == "latte":
+            coffee_size = input("Do you want a Small, Medium or Large? ").lower()
+            if coffee_size == "small":
+                check_resource(100, 12, 75)
+                if water >= 100 and coffee >= 12 and milk >= 75:
+                    small_latte = 2.00
+                    payment_total = 0.00
+                    print(f"That will be £{small_latte:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < small_latte:
+                        print(f"\nYou have under paid for this item, you still owe: £{small_latte - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: £{payment_total:.2f}")
+                    if payment_total > small_latte:
+                        change = round(payment_total - small_latte, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+
+                    money += small_latte
+                    water -= 100
+                    coffee -= 12
+                    milk -= 75
+
+                    print("\nThank you, enjoy!!")
+
+            elif coffee_size == "medium":
+                check_resource(200, 24, 150)
+                if water >= 200 and coffee >= 24 and milk >= 150:
+                    medium_latte = 3.00
+                    payment_total = 0.00
+                    print(f"That will be £{medium_latte:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < medium_latte:
+                        print(f"\nYou have under paid for this item, you still owe: £{medium_latte - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: {payment_total:.2f}")
+                    if payment_total > medium_latte:
+                        change = round(payment_total - medium_latte, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+                    money += medium_latte
+                    water -= 200
+                    coffee -= 24
+                    milk -= 150
+
+                    print("\nThank you, enjoy!!")
+
+            elif coffee_size == "large":
+                check_resource(250, 30, 200)
+                if water >= 250 and coffee >= 30 and milk >= 200:
+                    large_latte = 4.00
+                    payment_total = 0.00
+                    print(f"That will be £{large_latte:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < large_latte:
+                        print(f"\nYou have under paid for this item, you still owe: £{large_latte - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: {payment_total:.2f}")
+                    if payment_total > large_latte:
+                        change = round(payment_total - large_latte, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+                    money += large_latte
+                    water -= 250
+                    coffee -= 30
+                    milk -= 200
+
+                    print("\nThank you, enjoy!!")
+        
+        elif customer_order == "cappuccino":
+            coffee_size = input("Do you want a Small, Medium or Large? ").lower()
+            if coffee_size == "small":
+                check_resource(100, 12, 75)
+                if water >= 100 and coffee >= 12 and milk >= 75:
+                    small_cappuccino = 2.00
+                    payment_total = 0.00
+                    print(f"That will be £{small_cappuccino:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < small_cappuccino:
+                        print(f"\nYou have under paid for this item, you still owe: £{small_cappuccino - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: £{payment_total:.2f}")
+                    if payment_total > small_cappuccino:
+                        change = round(payment_total - small_cappuccino, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+
+                    money += small_cappuccino
+                    water -= 100
+                    coffee -= 12
+                    milk -= 75
+
+                    print("\nThank you, enjoy!!")
+
+            elif coffee_size == "medium":
+                check_resource(250, 24, 100)
+                if water >= 250 and coffee >= 24 and milk >= 100:
+                    medium_cappuccino = 3.00
+                    payment_total = 0.00
+                    print(f"That will be £{medium_cappuccino:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < medium_cappuccino:
+                        print(f"\nYou have under paid for this item, you still owe: £{medium_cappuccino - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: {payment_total:.2f}")
+                    if payment_total > medium_cappuccino:
+                        change = round(payment_total - medium_cappuccino, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+                    money += medium_cappuccino
+                    water -= 250
+                    coffee -= 24
+                    milk -= 100
+
+                    print("\nThank you, enjoy!!")
+
+            elif coffee_size == "large":
+                check_resource(300, 30, 200)
+                if water >= 300 and coffee >= 30 and milk >= 200:
+                    large_cappuccino = 4.00
+                    payment_total = 0.00
+                    print(f"That will be £{large_cappuccino:.2f}")
+
+                    print("\n")
+
+                    payment_total += collect_coins()
+
+                    while payment_total < large_cappuccino:
+                        print(f"\nYou have under paid for this item, you still owe: £{large_cappuccino - payment_total:.2f}")
+                        print("Please provide the outstanding payment: ")
+                        payment_total += collect_coins()
+
+                    print(f"\nYou paid: {payment_total:.2f}")
+                    if payment_total > large_cappuccino:
+                        change = round(payment_total - large_cappuccino, 2)
+                        print(f"\nHere is your change: £{change:.2f}")
+                    money += large_cappuccino
+                    water -= 250
+                    coffee -= 30
+                    milk -= 200
+
+                    print("\nThank you, enjoy!!")
+
+    else:
+        print("Incorrect input, please try again....")
