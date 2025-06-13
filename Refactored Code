@@ -1,0 +1,146 @@
+# The refactored code:
+
+import sys
+
+water = 1500
+coffee = 100
+milk = 1200
+money = 10.00
+
+
+def collect_coins():
+                    dollars = int(input("How many dollars do you want to pay (1.00): "))
+                    half_dollar = int(input("How many half dollars do you want to pay (0.50): "))
+                    quarters = int(input("How many quarters do you want to pay (0.25): "))
+                    dimes = int(input("How many dimes do you want to pay (0.10): "))
+                    nickels = int(input("How many nickel do you want to pay (0.05): "))
+                    penny = int(input("How many pennies do you want to pay (0.01): "))
+                    return (dollars * 1.00
+                        + half_dollar * 0.50
+                        + quarters * 0.25
+                        + dimes * 0.10
+                        + nickels * 0.05
+                        + penny * 0.01)
+
+def check_resource(required_water = 300, required_coffee = 30, required_milk = 200):
+    global water, coffee, milk
+
+    if water < required_water or coffee < required_coffee or milk < required_milk:
+        print("\nPlease wait - coffee machine resources being added...")
+        water += 500
+        coffee += 100
+        milk += 500
+        print("Resources have been refilled!\n")
+
+
+menu = {
+
+
+    "espresso": {
+        "price": 1.50,
+        "ingredients": {"water": 50, "coffee": 18, "milk": 0}
+    },
+
+    "latte": {
+        "small": {
+            "price": 2.00,
+            "ingredients": {"water": 100, "coffee": 12, "milk": 75}
+            },
+        "medium": {
+            "price": 3.00,
+            "ingredients": {"water": 200, "coffee": 24, "milk": 150}
+            },
+        "large": {
+            "price": 4.00,
+            "ingredients": {"water": 250, "coffee": 30, "milk": 200}
+            }
+        }, 
+    "cappuccino": {
+        "small": {
+            "price": 2.00,
+            "ingredients": {"water": 100, "coffee": 12, "milk": 75}
+            },
+        "medium": {
+            "price": 3.00,
+            "ingredients": {"water": 250, "coffee": 24, "milk": 100}
+            },
+        "large": {
+            "price": 4.00,
+            "ingredients": {"water": 300, "coffee": 30, "milk": 200}
+            }
+        }
+    }
+
+def process_payment(price):
+    total = 0.0
+    print(f"That will be £{price:.2f}")
+    while total < price:
+        total += collect_coins()
+        if total < price:
+            print(f"\nYou still owe: £{price - total:.2f}")
+    if total > price:
+        change = round(total - price, 2)
+        print(f"Here is your change: £{change:.2f}")
+    return price
+
+while True:
+    do_they_want_to_order = input("Would you like to order/continue? - Type 'Yes' or 'No': ").lower()
+    if do_they_want_to_order == "no":
+        print("Thank you for your time!")
+        sys.exit()
+    elif do_they_want_to_order == "yes":
+        customer_order = input("What would you like? - 'Espresso', 'Latte', 'Cappuccino', or a 'report' of remaining resources: ").lower()
+        if customer_order == "report":
+            print(f"Water: {water}ml")
+            print(f"Coffee: {coffee}g")
+            print(f"Milk: {milk}ml")
+            print(f"Money: £{money:.2f}")
+        
+        if customer_order == "espresso":
+            drink = menu["espresso"]
+            check_resource(**drink["ingredients"])
+            if all([
+                water >= drink["ingredients"]["water"],
+                   coffee >= drink["ingredients"]["coffee"],
+                   milk >= drink["ingredients"]["milk"]
+                   ]):
+                money += process_payment(drink["price"])
+                water -= drink["ingredients"]["water"]
+                coffee -= drink ["ingredients"]["coffee"]
+                milk -= drink["ingredients"]["milk"]
+                print("\nThank you, enjoy!!")
+
+        elif customer_order in ["latte", "cappuccino"]:
+            size = input("Small, Medium or Large? ").lower()
+
+            if size not in menu[customer_order]:
+                print("Invalid size. Please try again.")
+                continue
+
+            drink = menu[customer_order][size]
+            check_resource(**drink["ingredients"])
+            if all([
+                water >= drink["ingredients"]["water"],
+                   coffee >= drink["ingredients"]["coffee"],
+                   milk >= drink["ingredients"]["milk"]]):
+                money += process_payment(drink["price"])
+                water -= drink["ingredients"]["water"]
+                coffee -= drink["ingredients"]["coffee"]
+                milk -= drink["ingredients"]["milk"]
+                print("\nThank you, enjoy!!")
+
+        else:
+            print("Invalid drink choice. Please try again.")
+            continue
+
+
+    else:
+        print("Incorrect input, please try again....")
+
+
+
+     
+
+
+     
+
